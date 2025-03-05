@@ -1,0 +1,49 @@
+# Environment variables
+.env
+.env.*
+*.env
+
+# Terraform
+*.tfvars
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate.backup
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.env/
+.venv/
+build/
+develop-eggs/
+dist/
+eggs/
+*.egg-info/
+*.egg-info
+*.egg
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+*.log.*
+*.log.*.*
+*.log.*.*.*
+*.log.*.*.*.*
+*.log.*.*.*.*.*
