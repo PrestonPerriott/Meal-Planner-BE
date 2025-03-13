@@ -1,7 +1,7 @@
 import schedule
 import time
 import asyncio
-from backend.app.data.loader.grocery_seed import GrocerySeedService
+from app.data.loader.grocery_seed import GrocerySeedService
 
 # async def job():
 #     grocery_seed = GrocerySeedService()

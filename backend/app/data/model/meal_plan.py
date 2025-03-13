@@ -1,19 +1,15 @@
-from sqlmodel import Field, SQLModel
-import uuid
-import datetime
+from sqlmodel import Field, SQLModel, Relationship
 from typing import List, Optional
-from .grocery import GroceryItem, get_utc_now
+from .base import BaseModel
 
-class MealPlanBase(SQLModel):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+class MealPlanBase(BaseModel):
     name: str | None = Field(default=None)
-    ingredients: List[GroceryItem] = Field(default=[])
     suggested_meals: str = Field(default=None)
-    created_at: datetime.datetime | None = Field(default_factory=get_utc_now)
     description: Optional[str] = None
     
 class MealPlan(MealPlanBase, table=True):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    __tablename__ = "meal_plan" # Explicitly set the table name
+    ingredients: List["GroceryItem"] = Relationship(back_populates="meal_plan")
     
 class CreateMealPlan(MealPlanBase):
     pass
@@ -21,4 +17,6 @@ class CreateMealPlan(MealPlanBase):
 class MealPlans(SQLModel):
     data: list[MealPlan]
     count: int
-    
+
+# Avoid circualr dependency by importing at the end of the file
+from .grocery import GroceryItem

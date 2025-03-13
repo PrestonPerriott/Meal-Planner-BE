@@ -1,12 +1,8 @@
-from sqlmodel import SQLModel, Field
+from sqlmodel import SQLModel, Field, Relationship
+from typing import Optional
+from .base import BaseModel
 import uuid
-import datetime
-
-def get_utc_now():
-    return datetime.datetime.now(datetime.timezone.utc)
-
-class GroceryItemBase(SQLModel):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+class GroceryItemBase(BaseModel):
     name: str | None = Field(default=None)
     brand: str | None = Field(default=None)
     image: str | None = Field(default=None, max_length=512)
@@ -15,15 +11,18 @@ class GroceryItemBase(SQLModel):
     uom: str | None = Field(default=None, max_length=50)
     chain: str | None = Field(default=None, max_length=100)
     store: str | None = Field(default=None, max_length=100)
-    created_at: datetime.datetime | None = Field(default_factory=get_utc_now)
-    updated_at: datetime.datetime | None = Field(default_factory=get_utc_now, sa_column={"onupdate": get_utc_now})
     
 class GroceryItem(GroceryItemBase, table=True):
-    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    
+    __tablename__ = "grocery_item" # Explicitly set the table name
+    meal_plan_id: Optional[uuid.UUID] = Field(default=None, foreign_key="meal_plan.id")
+    meal_plan: Optional["MealPlan"] = Relationship(back_populates="ingredients")
+
 class CreateGroceryItem(GroceryItemBase):
     pass
 
 class GroceryItems(SQLModel):
     data: list[GroceryItem]
     count: int
+
+# Avoid circualr dependency by importing at the end of the file
+from .meal_plan import MealPlan

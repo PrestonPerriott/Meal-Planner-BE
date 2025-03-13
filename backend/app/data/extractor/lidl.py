@@ -1,5 +1,5 @@
-from backend.app.data.extractor.base_grocery_scraper import GroceryScraper
-from backend.app.data.model.grocery import CreateGroceryItem, GroceryItem
+from app.data.extractor.base_grocery_scraper import GroceryScraper
+from app.data.model.grocery import CreateGroceryItem, GroceryItem
 
 class LidlScraper(GroceryScraper):
     

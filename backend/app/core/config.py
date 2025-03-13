@@ -24,15 +24,22 @@ class Settings(BaseSettings):
     @computed_field
     @property
     def server_host(self) -> str:
-        if self.ENVIRONMENT == "local":
+        if self.ENVIRONMENT == "local" or self.ENVIRONMENT == "staging":
             print(f"starting on: http://{self.DOMAIN}")
             return f"http://{self.DOMAIN}"
         return f"https://{self.DOMAIN}"
     
+    @computed_field
+    @property
+    def db_host(self) -> str:
+        if self.ENVIRONMENT == "local":
+            return "localhost"
+        return "db"
+    
     CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = []
     
     PROJECT_NAME: str
-    POSTGRES_SERVER: str
+    # POSTGRES_SERVER: str
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = ""
     POSTGRES_USER: str
@@ -58,8 +65,8 @@ class Settings(BaseSettings):
     @property
     def SQLALCHEMY_DATABASE_URL(self) -> PostgresDsn:
         return MultiHostUrl.build(
-            scheme="postgresql+psycopg",
-            host=self.POSTGRES_SERVER,
+            scheme="postgresql+psycopg2",
+            host=self.db_host,
             port=self.POSTGRES_PORT,
             path=self.POSTGRES_DB,
             username=self.POSTGRES_USER,

@@ -8,7 +8,7 @@ from ...services.meal_planner import MealPlannerService
 from ...services.llm.local_llm import OllamsService
 from ...data.model.meal_plan import MealPlan, CreateMealPlan, MealPlan, MealPlans
 from ...data.model.grocery import GroceryItem
-from backend.app.core.db import get_db
+from app.core.db import get_db
 
 router = APIRouter(prefix="/meal-planner", tags=["meal-planner"])
 llm_service = OllamsService()

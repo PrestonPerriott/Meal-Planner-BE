@@ -1,7 +1,7 @@
 from sqlmodel import create_engine, Session, SQLModel
 from sqlalchemy_utils import database_exists, create_database
-from backend.app.core.config import settings
-import backend.app.data.model.grocery
+from app.core.config import settings
+import app.data.model.grocery
 from typing import Generator
 
 engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URL))

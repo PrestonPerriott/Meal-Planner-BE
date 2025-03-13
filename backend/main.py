@@ -1,9 +1,9 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.app.core.db import init_db
-from backend.app.api.routes import meal_planner
-from backend.app.api.routes import grocery
+from app.core.db import init_db
+from app.api.routes import meal_planner
+from app.api.routes import grocery
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

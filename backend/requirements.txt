@@ -1,0 +1,15 @@
+aiohttp
+beautifulsoup4
+fastapi
+psycopg2_binary
+pydantic
+pydantic_core
+pydantic_settings
+ratelimit
+Requests
+schedule
+selenium_wire
+SQLAlchemy_Utils
+sqlmodel
+tenacity
+uvicorn

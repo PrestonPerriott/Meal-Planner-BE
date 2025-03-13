@@ -4,7 +4,7 @@ from uuid import UUID
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select
 from ...data.model.grocery import GroceryItem
-from backend.app.core.db import get_db
+from app.core.db import get_db
 
 router = APIRouter(prefix="/grocery", tags=["grocery"])
 

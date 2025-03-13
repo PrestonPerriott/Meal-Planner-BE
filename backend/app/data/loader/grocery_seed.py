@@ -9,11 +9,11 @@ from functools import wraps
 from ratelimit import limits, sleep_and_retry
 from tenacity import retry, stop_after_attempt, wait_exponential
 from sqlmodel import Session
-from backend.app.core.db import get_db_session
-from backend.app.data.extractor.trader_joes import TraderJoesScraper
-from backend.app.data.extractor.whole_foods import WholeFoodsScraper
-from backend.app.data.extractor.food_bazaar import FoodBazaarScraper
-from backend.app.data.extractor.lidl import LidlScraper
+from app.core.db import get_db_session
+from app.data.extractor.trader_joes import TraderJoesScraper
+from app.data.extractor.whole_foods import WholeFoodsScraper
+from app.data.extractor.food_bazaar import FoodBazaarScraper
+from app.data.extractor.lidl import LidlScraper
 
 # logging.basicConfig(level=logging.INFO)
 # logger = logging.getLogger(__name__)
