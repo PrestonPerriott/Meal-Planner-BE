@@ -138,7 +138,7 @@ class GroceryScraper(ABC):
             print('Error while saving grocery items: ', e)
     
     @abstractmethod
-    async def extract_specified_content(self):
+    async def extract_specified_content(self, type: str):
        pass
     
     @abstractmethod

@@ -12,7 +12,7 @@ class FoodBazaarScraper(GroceryScraper):
     Args:
         GroceryScraper (_type_): _description_
     """
-    async def extract_specified_content(self):
+    async def extract_specified_content(self, type: str):
         grocery_items = []
         #for req in self.session_requests:
         #    print(f'\n{req.headers}')
@@ -33,6 +33,7 @@ class FoodBazaarScraper(GroceryScraper):
                 db_grocery_item = CreateGroceryItem(
                         name=result.get("name"),
                         brand=result.get("brandName"),
+                        type=type,
                         image=(result.get("viewSection") or {}).get('itemImage', {}).get('url'),
                         link=(result.get('evergreenUrl') or None),
                         price=(result.get('price') or {}).get('viewSection', {}).get('itemDetails', {}).get('priceString'),

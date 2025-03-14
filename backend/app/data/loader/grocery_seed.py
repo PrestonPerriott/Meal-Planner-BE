@@ -10,6 +10,7 @@ from ratelimit import limits, sleep_and_retry
 from tenacity import retry, stop_after_attempt, wait_exponential
 from sqlmodel import Session
 from app.core.db import get_db_session
+from app.data.extractor.base_grocery_scraper import GroceryScraper
 from app.data.extractor.trader_joes import TraderJoesScraper
 from app.data.extractor.whole_foods import WholeFoodsScraper
 from app.data.extractor.food_bazaar import FoodBazaarScraper
@@ -68,7 +69,7 @@ class GrocerySeedService:
             'lidl': f"{self.lidl_url}{item}{self.lidl_append_url}",
         }
     
-    def get_scraper(self, store: str, url: str, db: Session) -> None:
+    def get_scraper(self, store: str, url: str, db: Session) -> GroceryScraper:
         """Factory method to create scrapers with DB session"""
         scrapers = {
             'trader_joes': lambda: TraderJoesScraper(url=url, db_session=db),
@@ -87,7 +88,7 @@ class GrocerySeedService:
             print(f"\nScraping {item} from {store} at url: {url}")
             scraper = self.get_scraper(store, url, db)
             await scraper.set_source()
-            await scraper.extract_specified_content()
+            await scraper.extract_specified_content(type=item)
             await scraper.process_specified_content()
         except Exception as e:
             print(f"Error scraping {item} from {store}: {e}\n")

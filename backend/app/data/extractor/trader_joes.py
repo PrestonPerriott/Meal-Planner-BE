@@ -3,7 +3,7 @@ from app.data.model.grocery import CreateGroceryItem, GroceryItem
 
 class TraderJoesScraper(GroceryScraper):
     
-    async def extract_specified_content(self):
+    async def extract_specified_content(self, type: str):
         grocery_items = []
         try:
             food_items = self.soup.find_all('article', 'SearchResultCard_searchResultCard__3V-_h')
@@ -21,6 +21,7 @@ class TraderJoesScraper(GroceryScraper):
                 db_grocery_item = CreateGroceryItem(
                         name=item_name,
                         brand="Trader Joes Brand",
+                        type=type,
                         image=srcset[0],
                         link=item_link,
                         price=price,

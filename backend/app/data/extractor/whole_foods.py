@@ -3,7 +3,7 @@ from app.data.model.grocery import CreateGroceryItem, GroceryItem
 
 class WholeFoodsScraper(GroceryScraper):
     
-    async def extract_specified_content(self):
+    async def extract_specified_content(self, type: str):
         grocery_items = []
         try:  
             results = self.source['results']
@@ -12,6 +12,7 @@ class WholeFoodsScraper(GroceryScraper):
                 db_grocery_item = CreateGroceryItem(
                         name=result.get("name"),
                         brand=result.get("brand"),
+                        type=type,
                         image=result.get("imageThumbnail"),
                         link=result.get("slug"),
                         price=result.get("regularPrice"),

@@ -3,7 +3,7 @@ from app.data.model.grocery import CreateGroceryItem, GroceryItem
 
 class LidlScraper(GroceryScraper):
     
-    async def extract_specified_content(self):
+    async def extract_specified_content(self, type: str):
         grocery_items = []
         try:
             # TODO: Need to add pagination to the request
@@ -12,6 +12,7 @@ class LidlScraper(GroceryScraper):
                 db_grocery_item = CreateGroceryItem(
                         name=result["name"],
                         brand=result["brands"][0] if result["brands"] else None,
+                        type=type,
                         image=result["images"][0]['url'] if result["images"] else None,
                         link=None,
                         price=result["priceInformation"]['currentPrice']['currentPrice']['value'],
