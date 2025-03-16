@@ -1,4 +1,5 @@
 aiohttp
+alembic
 beautifulsoup4
 fastapi
 psycopg2_binary

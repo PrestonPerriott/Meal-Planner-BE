@@ -47,3 +47,9 @@ eggs/
 *.log.*.*.*
 *.log.*.*.*.*
 *.log.*.*.*.*.*
+
+# Alembic
+alembic/__pycache__/
+alembic/versions/__pycache__/
+alembic/*.pyc
+alembic/versions/*.pyc
