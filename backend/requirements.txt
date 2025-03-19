@@ -1,13 +1,16 @@
 aiohttp
 alembic
 beautifulsoup4
+blinker==1.7.0 # Version known to work with selenium wire
+cryptography # Additional dependency for selenium wire
 fastapi
 psycopg2_binary
 pydantic
 pydantic_core
 pydantic_settings
+pyOpenSSL # Additional dependency for cryptography
 ratelimit
-Requests
+requests
 schedule
 selenium_wire
 SQLAlchemy_Utils

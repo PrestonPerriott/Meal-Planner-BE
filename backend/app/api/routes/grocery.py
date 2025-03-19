@@ -10,19 +10,29 @@ router = APIRouter(prefix="/grocery", tags=["grocery"])
 
 @router.get("/", response_model=List[GroceryItem])
 async def get_grocery_items(db: AsyncSession = Depends(get_db)):
-    return await db.exec(select(GroceryItem)).all()
+    res = db.exec(select(GroceryItem))
+    return res.all()
 
-@router.get("/{item_id}", response_model=GroceryItem)
+@router.get("/id/{item_id}", response_model=GroceryItem)
 async def get_grocery_item(item_id: UUID, db: AsyncSession = Depends(get_db)):
-    item = await db.exec(select(GroceryItem).where(GroceryItem.id == item_id)).first()
+    result = db.exec(select(GroceryItem).where(GroceryItem.id == item_id))
+    item = result.scalar_one_or_none()
     if not item:
-        raise HTTPException(status_code=404, detail="Grocery item not found")
+        raise HTTPException(status_code=404, detail="ID: Grocery item not found")
     return item
 
-@router.get("/{brand_name}", response_model=List[GroceryItem])
+@router.get("/brand/{brand_name}", response_model=List[GroceryItem])
 async def get_grocery_items_by_brand(brand_name: str, db: AsyncSession = Depends(get_db)):
-    return await db.exec(select(GroceryItem).where(GroceryItem.brand_name == brand_name)).all()
+    result = db.exec(select(GroceryItem).where(GroceryItem.brand_name == brand_name))
+    items = result.all()
+    if not items:
+        raise HTTPException(status_code=404, detail="Brand: Grocery items not found")
+    return items
 
-@router.get("/{item_name}", response_model=List[GroceryItem])
+@router.get("/name/{item_name}", response_model=List[GroceryItem])
 async def get_grocery_items_by_item_name(item_name: str, db: AsyncSession = Depends(get_db)):
-    return await db.exec(select(GroceryItem).where(GroceryItem.item_name == item_name)).all()
+    result = db.exec(select(GroceryItem).where(GroceryItem.item_name == item_name))
+    items = result.all()
+    if not items:
+        raise HTTPException(status_code=404, detail="Name: Grocery items not found")
+    return items

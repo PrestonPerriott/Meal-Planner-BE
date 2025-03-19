@@ -1,4 +1,5 @@
 from seleniumwire import webdriver
+from selenium.webdriver.chrome.options import Options
 import requests
 import json
 from bs4 import BeautifulSoup
@@ -7,6 +8,9 @@ from abc import ABC, abstractmethod
 import time
 from sqlmodel import Session
 from aiohttp import ClientSession
+from app.core.config import settings
+import os
+
 class GroceryScraper(ABC):
     def __init__(self, url: str, parser: str = "lxml", wait: float = 4.0, db_session: Session = None):
         self.url = url
@@ -24,17 +28,6 @@ class GroceryScraper(ABC):
         self.source = None
         self.mapped_groceries = None
         self.available_pages = None
-              
-        # if not self.is_api:
-        #     # TODO: Need to decouple __set_soup_content from init
-        #     # Without self.source set, __set_soup_content cannot set a BeautifulSoup object
-        #     self.soup = self.__set_soup_content()
-        #     self.links = self.__process_links()
-        #     self.page_images = []
-        # else:
-        #     self.soup = None
-        #     self.links = None
-        #     pass
         
     async def set_source(self):
         if self.is_api:
@@ -45,7 +38,37 @@ class GroceryScraper(ABC):
                     return
             except Exception as e:
                 print('Request Error - Could not get api source: ', e)
-              
+                
+        if settings.ENVIRONMENT == 'staging':
+            print('Staging environment detected, setting up web driver for Docker')
+            try:
+                options = Options()
+                # Necessary Chrome options for Docker
+                options.add_argument('--headless')
+                options.add_argument('--no-sandbox')
+                options.add_argument('--disable-dev-shm-usage')
+                options.binary_location = os.getenv('CHROME_BIN', '/usr/bin/chromium')
+                
+                # TODO: Update to use a Service Object for Chrome Driver
+                driver = webdriver.Chrome(
+                    executable_path=os.getenv('CHROMEDRIVER_PATH', '/usr/bin/chromedriver'),
+                    options=options
+                )
+                
+                driver.get(self.url)
+                driver.implicitly_wait(self.wait)
+                for req in driver.requests:
+                    if req.response:
+                        self.session_requests.append(req.url)
+                        
+                self.source = driver.page_source
+                self.soup = self.__set_soup_content()
+                self.links = self.__process_links()
+                self.page_images = []
+                return
+            except Exception as e:
+                print('Docker Web Driver Error - Could not get page source: ', e)
+             
         try: 
             options = webdriver.ChromeOptions()
             options.add_argument('--headless')
@@ -58,10 +81,7 @@ class GroceryScraper(ABC):
             for req in driver.requests:
                 if req.response:
                     self.session_requests.append(req.url)
-            
-            #wait = WebDriverWait(driver=driver, timeout=self.wait)
-            #wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'div.w-pie--product-tile:nth-child(2) > a:nth-child(1) > div:nth-child(2) > span:nth-child(3)')))
-    
+                
             self.source = driver.page_source
             self.soup = self.__set_soup_content()
             self.links = self.__process_links()

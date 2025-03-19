@@ -61,6 +61,7 @@ class Settings(BaseSettings):
     OLLAMA_HOST: str
     OLLAMA_MODEL: str
     
+    PREPOPULATE_GROCERIES: bool
     @computed_field
     @property
     def SQLALCHEMY_DATABASE_URL(self) -> PostgresDsn:

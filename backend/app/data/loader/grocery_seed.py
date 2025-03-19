@@ -2,7 +2,7 @@ import os
 import logging
 from datetime import datetime
 from time import sleep
-from core.config import settings
+from app.core.config import settings
 import concurrent.futures
 import asyncio
 from functools import wraps
