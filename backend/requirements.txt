@@ -2,6 +2,7 @@ aiohttp
 alembic
 beautifulsoup4
 blinker==1.7.0 # Version known to work with selenium wire
+lxml # dependency for beautifulsoup4 and selenium wire
 cryptography # Additional dependency for selenium wire
 fastapi
 psycopg2_binary
