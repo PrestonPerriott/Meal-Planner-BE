@@ -1,5 +1,6 @@
 from seleniumwire import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 import requests
 import json
 from bs4 import BeautifulSoup
@@ -49,9 +50,11 @@ class GroceryScraper(ABC):
                 options.add_argument('--disable-dev-shm-usage')
                 options.binary_location = os.getenv('CHROME_BIN', '/usr/bin/chromium')
                 
+                service = Service(executable_path=os.getenv('CHROMEDRIVER_PATH', '/usr/bin/chromedriver'))
+                
                 # TODO: Update to use a Service Object for Chrome Driver
                 driver = webdriver.Chrome(
-                    executable_path=os.getenv('CHROMEDRIVER_PATH', '/usr/bin/chromedriver'),
+                    service=service,
                     options=options
                 )
                 
