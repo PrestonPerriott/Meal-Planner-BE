@@ -27,6 +27,19 @@ services:
     depends_on:
       - db
 
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    deploy:
+      resources:
+        limits:
+          memory: 12G # Max memory for ollama
+        reservations:
+          memory: 8G # Minimum memory for ollama
+
   backend:
     build: ./backend
     environment: # In docker localhost is the container itself
@@ -36,14 +49,17 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       DEBUG: ${DEBUG:-False}
+      OLLAMA_HOST: http://ollama:11434
     depends_on:
       db:
         condition: service_healthy
+      ollama:
+        condition: service_started
     ports:
       - "8000:8000"
 
 volumes:
   postgres_data:
-      
+  ollama_data:
       
       
