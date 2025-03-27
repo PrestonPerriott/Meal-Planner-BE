@@ -20,10 +20,10 @@ async def generate_meals(
     max_time: int = 30,
     db: AsyncSession = Depends(get_db)
 ):
-    meal_planner_service = MealPlannerService(llm_service, db)   
+    meal_planner_service = MealPlannerService(llm_service, db)
     result = db.exec(select(GroceryItem).where(GroceryItem.id.in_(selected_items)))
     grocery_items = result.all()
-
+    
     if not grocery_items:
         raise HTTPException(status_code=404, detail="Grocery items not found")
     
