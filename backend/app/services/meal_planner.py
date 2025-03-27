@@ -19,7 +19,8 @@ class MealPlannerService:
             num_meals: The number of meals to generate.
             max_time: The maximum time in minutes for each meal.
         """
-        prompt = MealPlanningPrompts.generate_meal_suggestions(selected_items, num_meals, max_time)
+        prompt = MealPlanningPrompts.construct_meal_prompt(selected_items, num_meals, max_time)
+        print(f"Prompt: {prompt}")
         response = await self.llm_service.generate_response(prompt)
         return response
     
