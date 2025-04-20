@@ -46,3 +46,11 @@ async def get_grocery_items_by_item_type(item_type: str, db: AsyncSession = Depe
     if not items:
         raise HTTPException(status_code=404, detail="Type: Grocery items not found")
     return items
+
+@router.get("chain/{chain_name}", response_model=List[GroceryItem])
+async def get_grocery_items_by_chain(chain_name: str, db: AsyncSession = Depends(get_db)):
+    result = db.exec(select(GroceryItem).where(GroceryItem.chain == chain_name))
+    items = result.all()
+    if not items:
+        raise HTTPException(status_code=404, detail="Chain: Grocery items not found")
+    return items

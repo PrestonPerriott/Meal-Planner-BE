@@ -10,7 +10,7 @@ class MealPlannerService:
         self.llm_service = llm_service
         self.db = db
         
-    async def generate_meal_plans(self, selected_items: List[GroceryItem], num_meals: int = 3, max_time: int = 30) -> str:
+    async def generate_meal_plans(self, selected_items: List[GroceryItem], num_meals: int = 3, max_time: int = 30, cuisine: str = "") -> str:
         """
         Generate a meal plan based on the selected items and the number of meals and max time.
         
@@ -19,7 +19,7 @@ class MealPlannerService:
             num_meals: The number of meals to generate.
             max_time: The maximum time in minutes for each meal.
         """
-        prompt = MealPlanningPrompts.construct_meal_prompt(selected_items, num_meals, max_time)
+        prompt = MealPlanningPrompts.construct_meal_prompt(selected_items, num_meals, max_time, cuisine)
         print(f"Prompt: {prompt}")
         response = await self.llm_service.generate_response(prompt)
         return response
