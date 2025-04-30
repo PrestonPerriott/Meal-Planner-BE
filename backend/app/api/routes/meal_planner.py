@@ -18,6 +18,7 @@ async def generate_meals(
     selected_items: List[UUID],
     num_meals: int = 3,
     max_time: int = 30,
+    cuisine: str = "Any",
     db: AsyncSession = Depends(get_db)
 ):
     meal_planner_service = MealPlannerService(llm_service, db)
@@ -27,7 +28,7 @@ async def generate_meals(
     if not grocery_items:
         raise HTTPException(status_code=404, detail="Grocery items not found")
     
-    meal_plans = await meal_planner_service.generate_meal_plans(grocery_items, num_meals, max_time)
+    meal_plans = await meal_planner_service.generate_meal_plans(grocery_items, num_meals, max_time, cuisine)
     return {"meal_suggestions": meal_plans}
     
     
