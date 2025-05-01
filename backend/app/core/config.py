@@ -61,6 +61,8 @@ class Settings(BaseSettings):
     OLLAMA_HOST: str
     OLLAMA_MODEL: str
     
+    QDRANT_HOST: str
+    
     PREPOPULATE_GROCERIES: bool
     @computed_field
     @property
