@@ -5,6 +5,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from app.core.config import settings
 from app.data.model.grocery import GroceryItem
+import uuid
 
 class VectorSearchService:
     def __init__(self, collection_name: str):
@@ -39,9 +40,30 @@ class VectorSearchService:
         return " ".join(parts)
     
     def index_grocery_item(self, item: GroceryItem):
-        pass
+        """Index a grocery item in the vector database"""
+        text = self._construct_grocery_text(item)
+        embedding = self._create_embedding(text)
+        self.client.upsert(
+            collection_name=self.collection_name, 
+            points=[models.PointStruct(
+            id=str(item.id),
+            vector=embedding,
+            payload={
+                "id": str(item.id),
+                "name": item.name,
+                "brand": item.brand,
+                "type": item.type,
+                "price": item.price,
+                "chain": item.chain,
+                "store": item.store,
+                "image_url": item.image,
+                "link": item.link,
+                "uom": item.uom
+            }
+        )])
     
     def index_grocery_items(self, items: List[GroceryItem]):
+        """Index a list of grocery items in the vector database"""
         points = []
         for item in items:
             text = self._construct_grocery_text(item)
@@ -76,5 +98,25 @@ class VectorSearchService:
         )
         
         return [item.payload for item in result]
+    
+    def search_similar_by_id(self, id: uuid.UUID, limit: int = 10) -> List[Dict[str, Any]]:
+        """Search for similar items by ID"""
+        result = self.client.retrieve(
+            collection_name=self.collection_name,
+            ids=[str(id)]
+        )
+        if not result:
+            return []
+        
+        # Use vecotr to find similar items
+        similar_items = self.client.search(
+            collection_name=self.collection_name,
+            query_vector=result[0].vector,
+            limit=limit+1
+        )
+        
+        # Remove the original item from the results
+        similar_items = [item for item in similar_items if item.id != str(id)]
+        return similar_items
     
     
