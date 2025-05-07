@@ -14,7 +14,7 @@ async def semantic_search(
 ):
     """Semantic search for items"""
     try:
-        results = await search_service.search(query, limit)
+        results = await search_service.search_similar_items(query, limit)
         return {"results": results, "status": "success", "count": len(results)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Search Error: {str(e)}")

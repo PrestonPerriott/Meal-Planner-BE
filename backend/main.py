@@ -24,6 +24,7 @@ app.add_middleware(
 app.include_router(meal_planner.router, prefix="/api/v1")
 app.include_router(grocery.router, prefix="/api/v1")
 app.include_router(search.router, prefix="/api/v1")
+
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
