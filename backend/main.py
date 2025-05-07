@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.db import init_db
 from app.api.routes import meal_planner
 from app.api.routes import grocery
+from app.api.routes import search
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -22,6 +23,7 @@ app.add_middleware(
 
 app.include_router(meal_planner.router, prefix="/api/v1")
 app.include_router(grocery.router, prefix="/api/v1")
+app.include_router(search.router, prefix="/api/v1")
 
 @app.get("/health")
 async def health_check():

@@ -10,10 +10,12 @@ pydantic
 pydantic_core
 pydantic_settings
 pyOpenSSL # Additional dependency for cryptography
+qdrant-client
 ratelimit
 requests
 schedule
 selenium_wire
+sentence-transformers
 SQLAlchemy_Utils
 sqlmodel
 tenacity
