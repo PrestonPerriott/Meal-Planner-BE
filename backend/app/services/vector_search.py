@@ -15,7 +15,7 @@ class VectorSearchService:
         self._ensure_collection_exists()
         
     def _ensure_collection_exists(self):
-        collections = self.client.get_collections()
+        collections = self.client.get_collections().collections
         collection_names = [collection.name for collection in collections]
         if self.collection_name not in collection_names:
             self.client.create_collection(

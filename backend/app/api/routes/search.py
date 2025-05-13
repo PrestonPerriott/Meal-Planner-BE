@@ -4,7 +4,7 @@ from app.services.vector_search import VectorSearchService
 from sqlmodel.ext.asyncio.session import AsyncSession
 from uuid import UUID
 router = APIRouter(prefix="/search", tags=["search"])
-search_service = VectorSearchService()
+search_service = VectorSearchService(collection_name="grocery_items")
 
 @router.get("/semantic")
 async def semantic_search(

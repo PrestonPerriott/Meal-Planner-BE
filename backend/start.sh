@@ -19,6 +19,10 @@ python -m scripts.create_db
 echo "Running the scraper..."
 python -m scripts.run_scraper
 
+# Run the vector database indexer
+echo "Indexing the vector database..."
+python -m scripts.index_vector_db
+
 # Start the FastAPI application
 echo "Starting the FastAPI application..."
 python -muvicorn main:app --host 0.0.0.0 --port 8000 --reload
