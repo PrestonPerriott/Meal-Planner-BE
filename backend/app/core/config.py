@@ -64,6 +64,7 @@ class Settings(BaseSettings):
     QDRANT_HOST: str
     
     PREPOPULATE_GROCERIES: bool
+    INDEX_VECTOR_DB: bool
     @computed_field
     @property
     def SQLALCHEMY_DATABASE_URL(self) -> PostgresDsn:

@@ -48,11 +48,12 @@ services:
       - "6333:6333"
       - "6334:6334"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
-      interval: 1m30s
-      timeout: 30s
+      # Curl isn't available in the base image, so we use a shell command to check if the port is open
+      test: ["CMD-SHELL", "timeout 1 bash -c '</dev/tcp/localhost/6333' || exit 1"]
+      interval: 5s
+      timeout: 5s
       retries: 5
-      start_period: 30s
+      start_period: 20s
 
   backend:
     build: ./backend
