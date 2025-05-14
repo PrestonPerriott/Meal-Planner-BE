@@ -90,11 +90,20 @@ class VectorSearchService:
     
     def search_similar_items(self, query: str, limit: int = 10) -> List[Dict[str, Any]]:
         embedded_query = self._create_embedding(query)
+        print(f"Vector Search Service: Embedded query: {embedded_query}")
+        
+        search_params = models.SearchParams(
+            hnsw_ef=128,
+            exact=False
+        )
         
         result = self.client.search(
             collection_name=self.collection_name,
             query_vector=embedded_query,
-            limit=limit
+            search_params=search_params,
+            limit=limit,
+            with_payload=True,
+            with_vectors=False
         )
         
         return [item.payload for item in result]
