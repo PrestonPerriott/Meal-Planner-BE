@@ -1,3 +1,26 @@
+# Database Module
+# This module creates a PostgreSQL database instance in AWS
+
+# Create a security group for the database
+resource "aws_security_group" "database" {
+  name_prefix = "${var.environment}-db-sg"
+  description = "Security group for the database"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port   = var.db_port
+    to_port     = var.db_port
+    protocol    = "tcp"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_db_instance" "postgres" {
   identifier           = "${var.environment}-db"
   allocated_storage    = 20

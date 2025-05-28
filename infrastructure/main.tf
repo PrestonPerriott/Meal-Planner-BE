@@ -1,7 +1,7 @@
 # Configure AWS provider
-provider "aws" {
-  region = var.aws_region
-}
+#provider "aws" {
+#  region = var.aws_region
+#}
 
 # Networking Module
 module "networking" {
@@ -9,7 +9,6 @@ module "networking" {
   
   environment         = var.environment
   vpc_cidr           = var.vpc_cidr
-  vpc_id             = module.networking.vpc_id
   availability_zones = var.availability_zones
 }
 
@@ -37,7 +36,7 @@ module "database" {
   source = "./modules/database"
   
   environment         = var.environment
-#   vpc_id             = module.networking.vpc_id
+  vpc_id             = module.networking.vpc_id
   private_subnet_ids = module.networking.private_subnet_ids
   
   db_instance_class  = var.db_instance_class

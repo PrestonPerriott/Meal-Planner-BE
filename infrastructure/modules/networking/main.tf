@@ -1,3 +1,6 @@
+# Networking Module
+# This module creates a VPC and subnets in the specified region
+
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
